@@ -22,7 +22,7 @@ private const val INVALID_DATA_MESSAGE = "Невалидные данные вв
 data class RegisterUserResponse(val userId: String)
 
 data class UserResponse(
-    val id: UUID,
+    val id: String,
     val firstName: String,
     val secondName: String,
     val birthDate: LocalDate,
@@ -58,9 +58,10 @@ class UserController(
     }
 
     @GetMapping("/get/{id}")
-    fun getUserById(@PathVariable id: UUID): ResponseEntity<Any> {
+    fun getUserById(@PathVariable id: String): ResponseEntity<Any> {
         log.info("Request for user info of User: {}", id)
         val user = userService.getUserById(id)
+        log.info("Found user by id {}: {}", id, user)
         return if (user != null) {
             ResponseEntity.ok(
                 UserResponse(

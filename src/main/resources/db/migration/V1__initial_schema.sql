@@ -2,7 +2,7 @@ CREATE SCHEMA userdb;
 
 CREATE TABLE userdb.users
 (
-    id            UUID PRIMARY KEY,
+    id            VARCHAR(100) PRIMARY KEY,
     first_name    VARCHAR(100)                      NOT NULL,
     second_name   VARCHAR(100)                      NOT NULL,
     birth_date    DATE                              NOT NULL,

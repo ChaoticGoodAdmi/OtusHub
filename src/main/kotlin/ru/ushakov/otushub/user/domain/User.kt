@@ -1,10 +1,9 @@
 package ru.ushakov.otushub.user.domain
 
 import java.time.LocalDate
-import java.util.*
 
 data class User(
-    val id: UUID? = null,
+    var id: String? = null,
     val firstName: String,
     val secondName: String,
     val birthDate: LocalDate,

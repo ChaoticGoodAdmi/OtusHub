@@ -33,6 +33,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.7")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("net.datafaker:datafaker:1.5.0")
+
 }
 
 kotlin {

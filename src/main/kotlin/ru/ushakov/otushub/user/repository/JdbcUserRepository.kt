@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import ru.ushakov.otushub.user.domain.Sex
 import ru.ushakov.otushub.user.domain.User
-import java.util.*
 
 @Repository
 class JdbcUserRepository(
@@ -21,7 +20,7 @@ class JdbcUserRepository(
 
     private val userRowMapper = RowMapper<User> { rs, _ ->
         User(
-            id = UUID.fromString(rs.getString("id")),
+            id = rs.getString("id"),
             firstName = rs.getString("first_name"),
             secondName = rs.getString("second_name"),
             birthDate = rs.getDate("birth_date").toLocalDate(),
@@ -33,7 +32,6 @@ class JdbcUserRepository(
     }
 
     override fun save(user: User): User {
-        val userId = UUID.randomUUID()
         val sql = """
             INSERT INTO userdb.users (id, first_name, second_name, birth_date, sex, biography, city, password_hash) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -41,7 +39,7 @@ class JdbcUserRepository(
 
         jdbcTemplate.update(
             sql,
-            userId,
+            user.id,
             user.firstName,
             user.secondName,
             user.birthDate,
@@ -50,10 +48,10 @@ class JdbcUserRepository(
             user.city,
             user.password
         )
-        return user.copy(id = userId)
+        return user
     }
 
-    override fun findByUserId(userId: UUID): User? {
+    override fun findByUserId(userId: String): User? {
         log.info("Trying to find user by Id: {}", userId)
         val sql = """
             SELECT id, first_name, second_name, birth_date, sex, biography, city, password_hash 
