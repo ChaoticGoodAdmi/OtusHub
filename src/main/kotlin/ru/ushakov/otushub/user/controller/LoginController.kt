@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.ushakov.otushub.exception.InvalidCredentialsException
 import ru.ushakov.otushub.exception.UserNotFoundException
+import ru.ushakov.otushub.health.aspect.HealthCheck
 import ru.ushakov.otushub.user.controller.request.UserLoginRequest
 import ru.ushakov.otushub.user.service.AuthenticationService
 
 @RestController
 @RequestMapping("/login")
+@HealthCheck
 class LoginController(
     private val authenticationService: AuthenticationService
 ) {

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import ru.ushakov.otushub.exception.ErrorResponse
+import ru.ushakov.otushub.health.aspect.HealthCheck
 import ru.ushakov.otushub.user.controller.request.RegisterUserRequest
 import ru.ushakov.otushub.user.domain.Sex
 import ru.ushakov.otushub.user.service.RegistrationService
@@ -34,6 +35,7 @@ data class UserResponse(
 
 @RestController
 @RequestMapping("/user")
+@HealthCheck
 class UserController(
     private val registrationService: RegistrationService,
     private val userService: UserService
