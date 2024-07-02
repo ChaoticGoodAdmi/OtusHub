@@ -28,7 +28,6 @@ class JwtAuthenticationFilter(
         filterChain: FilterChain,
     ) {
         val jwt = tokenManager.parseJwt(request)
-        jwt.let { log.info("Need to validate JWT token [{}]", it) }
         if (jwt != null && tokenManager.validateToken(jwt)) {
             val username = tokenManager.getUsernameFromToken(jwt)
             log.info("JWT token is valid for user: {}", username)

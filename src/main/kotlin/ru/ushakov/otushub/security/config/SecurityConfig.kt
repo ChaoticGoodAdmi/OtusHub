@@ -28,7 +28,9 @@ class SecurityConfig {
             .authorizeHttpRequests { auth ->
                 auth.requestMatchers(
                     "/user/register",
-                    "/login"
+                    "/login",
+                    "/actuator/**",
+                    "/ping"
                 ).permitAll()
                     .anyRequest().authenticated()
             }

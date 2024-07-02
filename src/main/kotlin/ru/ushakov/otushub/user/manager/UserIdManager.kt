@@ -1,6 +1,6 @@
 package ru.ushakov.otushub.user.manager
 
-interface UserIdManager {
+fun interface UserIdManager {
 
     fun generateUserId(): String
 }

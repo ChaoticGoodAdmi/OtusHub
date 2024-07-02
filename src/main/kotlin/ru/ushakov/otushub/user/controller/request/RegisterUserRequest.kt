@@ -8,24 +8,24 @@ import java.time.LocalDate
 
 data class RegisterUserRequest(
     @field:NotBlank(message = "First name is required.")
-    val firstName: String,
+    var firstName: String?,
 
     @field:NotBlank(message = "Second name is required.")
-    val secondName: String,
+    var secondName: String?,
 
     @field:Past(message = "Birth date must be in the past.")
-    val birthDate: LocalDate,
+    var birthDate: LocalDate?,
 
     @field:Pattern(regexp = "^(MALE|FEMALE)$", message = "Sex must be either 'MALE' or 'FEMALE'")
-    val sex: String,
+    var sex: String?,
 
     @field:NotBlank(message = "Biography is required.")
     @field:Size(max = 200, message = "Biography cannot exceed 200 characters.")
-    val biography: String,
+    var biography: String?,
 
     @field:NotBlank(message = "City is required.")
-    val city: String,
+    var city: String?,
 
     @field:NotBlank(message = "Password is required.")
-    val password: String
+    var password: String?
 )
