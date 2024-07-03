@@ -9,8 +9,73 @@
 
 ### Общая информация
 
-- **Версия API:** 1.2.0
+- **Версия API:** 1.0.0
 - **Заголовок:** OTUS Highload Architect
+
+### [Коллекция Postman-запросов](https://github.com/ChaoticGoodAdmi/OtusHub/blob/master/src/main/resources/otushub.postman_collection.json)
+
+### Альтернатива: cUrl запросы
+
+#### Регистрация пользователя (валидация данных и сохранение пользователя в БД)
+
+*Необходимо поменять данные в теле запроса на нужные*
+**Требования:**
+
+1. все поля не пустые
+2. birthDate: в формате "YYYY-MM-DD" должна быть в прошлом
+3. sex: "MALE" или "FEMALE"
+4. biography: не длиннее 200 символов`
+
+```bash
+curl -X POST http://localhost:4242/user/register \
+    -H "Content-Type: application/json" \
+    -d '{
+          "firstName": "Kirill",
+          "secondName": "Ushakov",
+          "birthDate": "1990-05-03",
+          "sex": "MALE",
+          "biography": "A software developer with over 4 years of experience in backend development.",
+          "city": "Vladimir",
+          "password": "securepassword123"
+        }'
+```
+
+#### Аутентификация пользователя по userId и password
+
+*Необходимо поменять данные в теле запроса на нужные*
+**Требования:**
+
+1. userId: подставить UUID, сгенерированный при выполнении метода user/register
+2. password: тот же пароль, что использовался в теле запроса в user/register
+
+```bash
+curl -X POST http://localhost:4242/login \
+    -H "Content-Type: application/json" \
+    -d '{
+          "userId": "ea2915",
+          "password": "securepassword123"
+        }'
+```
+
+#### Получение анкетных данных пользователя по UserId
+
+*Необходимо поменять данные в URL и в заголовке Authentication на нужные*
+**Требования:**
+
+1. userId: подставить UUID, сгенерированный при выполнении метода user/register в URL запроса
+2. Headers: в заголовке запроса Authentication вставить токен, полученный при выполнении сервиса /login после "Bearer<
+   пробел>"
+
+```bash
+curl -X GET http://localhost:4242/user/get/ea2915 \
+    -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlYTI5MTUiLCJpYXQiOjE3MjAwMDIyMzQsImV4cCI6MTcyMDA4ODYzNH0.Q456enA8phHL7VhMSr7u4ec12xTMcK1Fi1_6eSpzCK8XCc3WjFHfzFTs_q2_qxjZ3ighJF1_19pjLes9Mx1TbQ"
+```
+
+#### Health Check
+
+```bash
+curl -X GET http://localhost:4242/actuator/health
+```
 
 ### Методы API
 
@@ -85,17 +150,19 @@
 
 ## Инструкция по запуску
 
-### Необходимые переменные окружения
+1. Клонировать проект из репозитория командой:
 
-Перед запуском приложения необходимо установить следующие переменные окружения:
+```
+git clone https://github.com/ChaoticGoodAdmi/OtusHub.git
+```
+
+2. Перед запуском приложения необходимо установить следующие переменные окружения:
 
 - `SPRING_DATASOURCE_URL`: URL базы данных
 - `SPRING_DATASOURCE_USERNAME`: Имя пользователя базы данных
 - `SPRING_DATASOURCE_PASSWORD`: Пароль пользователя базы данных
 - `JWT_SECRET`: Секретный ключ для подписи JWT токенов
 - `SERVICE_URL`: Базовый URL для внешних сервисов
-
-### Файл конфигурации
 
 Пример файла конфигурации `application.properties`:
 
@@ -118,3 +185,22 @@ healthcheck.cpuThreshold=0.7
 healthcheck.memoryThreshold=0.8
 management.endpoints.web.exposure.include=health,info,metrics,env,configprops
 management.endpoint.health.show-details=always
+```
+
+3. Запустить контейнер с базой Postgres
+
+```
+docker run --name otushub-postgres -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres
+```
+
+4. В директории с проектом выполнить команду:
+
+```
+docker build -t otushub-backend .
+```
+
+5. Затем запустить контейнер
+
+```
+docker run -d -p 4242:4242 --name otushub-backend otushub-backend
+```
