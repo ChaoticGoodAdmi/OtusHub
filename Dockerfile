@@ -4,6 +4,7 @@ WORKDIR /app
 COPY gradlew .
 COPY gradlew.bat .
 RUN chmod +x ./gradlew
+RUN sed -i 's/\r$//' gradlew
 
 COPY gradle ./gradle
 COPY build.gradle.kts .
