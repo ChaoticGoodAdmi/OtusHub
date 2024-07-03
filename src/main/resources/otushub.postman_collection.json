@@ -1,0 +1,123 @@
+{
+  "info": {
+    "_postman_id": "e219e823-957a-40a7-9ef1-3a493076f4c5",
+    "name": "otushub",
+    "description": "Социальная сеть для курса Highload Architect 2024.06",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12899390"
+  },
+  "item": [
+    {
+      "name": "Lesson 1",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"Kirill\",\r\n  \"secondName\": \"Ushakov\",\r\n  \"birthDate\": \"1990-05-03\",\r\n  \"sex\": \"MALE\",\r\n  \"biography\": \"A software developer with over 4 years of experience in backend development.\",\r\n  \"city\": \"Vladimir\",\r\n  \"password\": \"securepassword123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4242/user/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4242",
+              "path": [
+                "user",
+                "register"
+              ]
+            },
+            "description": "**Регистрация пользователя (валидация данных и сохранение пользователя в БД)**\n\n_Необходимо поменять данные в_ <u><i>теле запроса</i></u> _на нужные._\n\n**Требования**:\n\n- все поля не пустые\n- **birthDate**: в формате \"YYYY-MM-DD\" должна быть в прошлом\n- **sex**: \"MALE\" или \"FEMALE\"\n- **biography**: не длиннее 200 символов"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": \"ea2915\",\r\n    \"password\": \"securepassword123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4242/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4242",
+              "path": [
+                "login"
+              ]
+            },
+            "description": "**Аутентификация пользователя по userId и password**\n\n_Необходимо поменять данные в_ <u><i>теле запроса</i></u> _на нужные._\n\n**Требования**:\n\n- **userId**: подставить UUID, сгенерированный при выполнении метода user/register\n- **password**: тот же пароль, что использовался в теле запроса в user/register"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By UserId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlYTI5MTUiLCJpYXQiOjE3MjAwMDIyMzQsImV4cCI6MTcyMDA4ODYzNH0.Q456enA8phHL7VhMSr7u4ec12xTMcK1Fi1_6eSpzCK8XCc3WjFHfzFTs_q2_qxjZ3ighJF1_19pjLes9Mx1TbQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4242/user/get/ea2915",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4242",
+              "path": [
+                "user",
+                "get",
+                "ea2915"
+              ]
+            },
+            "description": "**Получение анкетных данных пользователя по UserId**\n\n_Необходимо поменять данные в_ <u><i>URL</i></u> _и в_ <u>заголовке Authentication</u> _на нужные._\n\n**Требования**:\n\n- **userId**: подставить UUID, сгенерированный при выполнении метода user/register в URL запроса\n- **Headers**: в заголовке запроса Authentication вставить токен, полученный при выполнении сервиса /login после \"Bearer<пробел>\""
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:4242/actuator/health",
+              "host": [
+                "localhost"
+              ],
+              "port": "4242",
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Запросы к ДЗ урока №1"
+    }
+  ]
+}
