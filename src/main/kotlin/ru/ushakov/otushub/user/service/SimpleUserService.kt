@@ -12,5 +12,9 @@ class SimpleUserService(
     override fun getUserById(id: String): User? {
         return userRepository.findByUserId(id)
     }
+
+    override fun searchUsers(firstName: String, secondName: String): List<User> {
+        return userRepository.searchByFirstNameOrSecondName(firstName, secondName)
+    }
 }
 

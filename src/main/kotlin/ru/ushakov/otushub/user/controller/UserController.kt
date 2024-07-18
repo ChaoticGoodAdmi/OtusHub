@@ -65,19 +65,21 @@ class UserController(
         val user = userService.getUserById(id)
         log.info("Found user by id {}: {}", id, user)
         return if (user != null) {
-            ResponseEntity.ok(
-                UserResponse(
-                    id = user.id!!,
-                    firstName = user.firstName,
-                    secondName = user.secondName,
-                    birthDate = user.birthDate,
-                    sex = user.sex,
-                    biography = user.biography,
-                    city = user.city
-                )
-            )
+            ResponseEntity.ok(UserMapper.mapToUserResponse(user))
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(listOf("Анкета не найдена")))
         }
+    }
+
+    @GetMapping("/search")
+    fun searchUsers(
+        @RequestParam("first_name", required = false, defaultValue = "") firstName: String?,
+        @RequestParam("last_name", required = false, defaultValue = "") secondName: String?
+    ): ResponseEntity<Any> {
+        return if (firstName == null || secondName == null || firstName.isBlank() || secondName.isBlank()) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(listOf(INVALID_DATA_MESSAGE)))
+        } else ResponseEntity.ok(
+            userService.searchUsers(firstName, secondName).map { user -> UserMapper.mapToUserResponse(user) }
+        )
     }
 }

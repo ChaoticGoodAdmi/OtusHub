@@ -204,3 +204,54 @@ docker build -t otushub-backend .
 ```
 docker run -d -p 4242:4242 --name otushub-backend otushub-backend
 ```
+
+## Инструкция по заполнению таблицы случайными данными
+
+1. Установить Python 3.12
+2. Выполнить команду
+
+```
+pip install -r src/main/resources/db/populate/requirements.txt
+```
+
+3. Выполнить команду
+
+```
+python src/main/resources/db/populate/generate_data.py
+```
+
+В результате сгенерируется файл users.csv (пример сгенерированного файла с 1 000 000 значений приложен).
+
+4. Выполнить команду на случай сгенерированных неуникальных id (при генерации в коде приложения есть проверка):
+
+```
+python src/main/resources/db/populate/check_non_unique_ids.py.py
+```
+
+5. В файле `src/main/resources/db/populate/insert_data.py` добавить значения для локальной БД:
+
+```
+  DB_NAME = 'название БД'
+  DB_USER = 'имя пользователя'
+  DB_PASSWORD = 'пароль'
+  DB_HOST = 'адрес БД'
+  DB_PORT = 'порт БД'
+```
+
+Пример:
+
+```
+  DB_NAME = 'otushub'
+  DB_USER = 'admin'
+  DB_PASSWORD = 'password'
+  DB_HOST = 'localhost'
+  DB_PORT = '5432'
+```
+
+4. Выполнить команду
+
+```
+python src/main/resources/db/populate/insert_data.py
+```
+
+5. Пароли сгенерированных пользователей соответствуют имени и фамилии в формате "ИмяФамилия". Пример: "AmandaHale".

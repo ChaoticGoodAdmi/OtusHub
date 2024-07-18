@@ -7,4 +7,6 @@ interface UserRepository {
     fun save(user: User): User
 
     fun findByUserId(userId: String): User?
+
+    fun searchByFirstNameOrSecondName(firstName: String, secondName: String): List<User>
 }

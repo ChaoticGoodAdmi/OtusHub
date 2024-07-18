@@ -1,0 +1,4 @@
+pandas
+Faker
+bcrypt
+psycopg2-binary
