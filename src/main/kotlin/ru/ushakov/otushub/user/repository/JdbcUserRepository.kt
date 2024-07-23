@@ -51,8 +51,20 @@ class JdbcUserRepository(
         return user
     }
 
+    override fun searchByFirstNameOrSecondName(firstName: String, secondName: String): List<User> {
+        val sql = StringBuilder("SELECT * FROM userdb.users WHERE ")
+        val params = mutableListOf<Any>()
+
+        sql.append("LOWER(first_name) LIKE ? ")
+        params.add("$firstName%")
+
+        sql.append("AND LOWER(second_name) LIKE ? ;")
+        params.add("$secondName%")
+
+        return jdbcTemplate.query(sql.toString(), userRowMapper, *params.toTypedArray())
+    }
+
     override fun findByUserId(userId: String): User? {
-        log.info("Trying to find user by Id: {}", userId)
         val sql = """
             SELECT id, first_name, second_name, birth_date, sex, biography, city, password_hash 
             FROM userdb.users 

@@ -17,5 +17,15 @@ class UserMapper {
                 password = request.password!!
             )
         }
+
+        fun mapToUserResponse(user: User) = UserResponse(
+            id = user.id!!,
+            firstName = user.firstName,
+            secondName = user.secondName,
+            birthDate = user.birthDate,
+            sex = user.sex,
+            biography = user.biography,
+            city = user.city
+        )
     }
 }

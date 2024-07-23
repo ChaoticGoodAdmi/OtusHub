@@ -2,7 +2,9 @@ package ru.ushakov.otushub.user.service
 
 import ru.ushakov.otushub.user.domain.User
 
-fun interface UserService {
+interface UserService {
 
     fun getUserById(id: String): User?
+
+    fun searchUsers(firstName: String, secondName: String): List<User>
 }
