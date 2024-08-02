@@ -5,13 +5,14 @@ import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
 import org.aspectj.lang.reflect.MethodSignature
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import ru.ushakov.otushub.health.service.HealthCheckService
 import javax.naming.ServiceUnavailableException
 
 private const val SERVICE_AVAILABILITY_CHECK = "service"
 private const val DATABASE_AVAILABILITY_CHECK = "database"
-
 private const val RESOURCES_INSUFFICIENCY_CHECK = "resources"
 
 @Aspect
@@ -19,6 +20,10 @@ private const val RESOURCES_INSUFFICIENCY_CHECK = "resources"
 class HealthCheckAspect(
     private val healthCheckService: HealthCheckService
 ) {
+
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(this::class.java)
+    }
 
     @Pointcut("@within(HealthCheck) || @annotation(HealthCheck)")
     fun healthCheckMethods() {
@@ -42,13 +47,19 @@ class HealthCheckAspect(
     fun performChecks(healthCheck: HealthCheck) {
         val checks = healthCheck.checks
         if (SERVICE_AVAILABILITY_CHECK in checks && !healthCheckService.isServiceAvailable()) {
-            throw ServiceUnavailableException("Service is unavailable.")
+            val message = "Service is unavailable."
+            log.error(message)
+            throw ServiceUnavailableException(message)
         }
         if (DATABASE_AVAILABILITY_CHECK in checks && !healthCheckService.isDatabaseAvailable()) {
-            throw ServiceUnavailableException("Database is unavailable.")
+            val message = "Database is unavailable."
+            log.error(message)
+            throw ServiceUnavailableException(message)
         }
         if (RESOURCES_INSUFFICIENCY_CHECK in checks && !healthCheckService.hasSufficientResources()) {
-            throw ServiceUnavailableException("Insufficient resources.")
+            val message = "Insufficient resources."
+            log.error(message)
+            throw ServiceUnavailableException(message)
         }
     }
 }

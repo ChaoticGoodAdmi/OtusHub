@@ -37,6 +37,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceUnavailableException::class)
     fun handleServiceUnavailableException(e: ServiceUnavailableException): ResponseEntity<ErrorResponse> {
+        log.error(SERVER_ERROR_MESSAGE, e)
         val headers = HttpHeaders()
         headers.add("Retry-After", retryAfterSeconds)
         return ResponseEntity(
