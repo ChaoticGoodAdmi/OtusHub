@@ -9,7 +9,7 @@
 
 ### Общая информация
 
-- **Версия API:** 1.0.0
+- **Версия API:** 1.1.0
 - **Заголовок:** OTUS Highload Architect
 
 ### [Коллекция Postman-запросов](https://github.com/ChaoticGoodAdmi/OtusHub/blob/master/src/main/resources/otushub.postman_collection.json)
@@ -255,3 +255,20 @@ python src/main/resources/db/populate/insert_data.py
 ```
 
 5. Пароли сгенерированных пользователей соответствуют имени и фамилии в формате "ИмяФамилия". Пример: "AmandaHale".
+
+6. В скриптах из папки src/main/resources/db/populate/friends_and_posts заменить необходимые параметры Выполнить команды
+
+```python
+python src/main/resources/db/populate/friends_and_posts/generate_posts.py
+python src/main/resources/db/populate/friends_and_posts/generate_posts_for_celebrity.py
+python src/main/resources/db/populate/friends_and_posts/generate_friends.py
+python src/main/resources/db/populate/friends_and_posts/generate_friends_for_celebrity.py
+```
+
+7. Импортировать файлы в БД в соответствующие таблицы:
+
+- **posts_data.csv**
+- **single_user_posts.csv**
+- **friends_for_single_user.csv**
+- **friends_data.csv** 
+
