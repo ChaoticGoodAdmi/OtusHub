@@ -9,7 +9,7 @@
 
 ### Общая информация
 
-- **Версия API:** 1.0.0
+- **Версия API:** 1.1.0
 - **Заголовок:** OTUS Highload Architect
 
 ### [Коллекция Postman-запросов](https://github.com/ChaoticGoodAdmi/OtusHub/blob/master/src/main/resources/otushub.postman_collection.json)
@@ -163,6 +163,8 @@ git clone https://github.com/ChaoticGoodAdmi/OtusHub.git
 - `SPRING_DATASOURCE_PASSWORD`: Пароль пользователя базы данных
 - `JWT_SECRET`: Секретный ключ для подписи JWT токенов
 - `SERVICE_URL`: Базовый URL для внешних сервисов
+- `SPRING_DATA_REDIS_HOST`: hostname сервера Redis
+- `SPRING_DATA_REDIS_PORT`: порт сервера Redis
 
 Пример файла конфигурации `application.properties`:
 
@@ -185,12 +187,15 @@ healthcheck.cpuThreshold=0.7
 healthcheck.memoryThreshold=0.8
 management.endpoints.web.exposure.include=health,info,metrics,env,configprops
 management.endpoint.health.show-details=always
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
 ```
 
-3. Запустить контейнер с базой Postgres
+3. Запустить контейнер с базой Postgres и контейнер с кэшом Redis
 
 ```
 docker run --name otushub-postgres -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres
+docker run --name otushub-cache -p 6379:6379 -d redis:latest
 ```
 
 4. В директории с проектом выполнить команду:
@@ -255,3 +260,20 @@ python src/main/resources/db/populate/insert_data.py
 ```
 
 5. Пароли сгенерированных пользователей соответствуют имени и фамилии в формате "ИмяФамилия". Пример: "AmandaHale".
+
+6. В скриптах из папки src/main/resources/db/populate/friends_and_posts заменить необходимые параметры Выполнить команды
+
+```python
+python src/main/resources/db/populate/friends_and_posts/generate_posts.py
+python src/main/resources/db/populate/friends_and_posts/generate_posts_for_celebrity.py
+python src/main/resources/db/populate/friends_and_posts/generate_friends.py
+python src/main/resources/db/populate/friends_and_posts/generate_friends_for_celebrity.py
+```
+
+7. Импортировать файлы в БД в соответствующие таблицы:
+
+- **posts_data.csv**
+- **single_user_posts.csv**
+- **friends_for_single_user.csv**
+- **friends_data.csv** 
+

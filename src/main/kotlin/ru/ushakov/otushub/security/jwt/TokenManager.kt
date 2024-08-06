@@ -8,4 +8,5 @@ interface TokenManager {
     fun validateToken(authToken: String): Boolean
     fun parseJwt(request: HttpServletRequest): String?
     fun getUsernameFromToken(token: String): String
+    fun extractUserId(jwtToken: String): Any
 }

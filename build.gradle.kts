@@ -37,6 +37,9 @@ dependencies {
     implementation("net.datafaker:datafaker:1.5.0")
     implementation("org.springframework.boot:spring-boot-starter-aop:3.3.1")
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.1")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 kotlin {

@@ -1,5 +1,6 @@
 package ru.ushakov.otushub.security.jwt
 
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import io.vavr.control.Try
@@ -49,5 +50,18 @@ class JwtTokenManager(
             .build()
             .parseSignedClaims(token)
             .payload.subject
+    }
+
+    override fun extractUserId(jwtToken: String): String {
+        val claims = extractAllClaims(jwtToken)
+        return claims.subject
+    }
+
+    private fun extractAllClaims(token: String): Claims {
+        return Jwts.parser()
+            .verifyWith(Keys.hmacShaKeyFor(jwtSecret.toByteArray()))
+            .build()
+            .parseSignedClaims(token)
+            .payload
     }
 }
