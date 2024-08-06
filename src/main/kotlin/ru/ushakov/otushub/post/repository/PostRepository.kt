@@ -14,5 +14,7 @@ interface PostRepository {
 
     fun getPost(postId: Long): Post?
 
-    fun findPostsByFriends(userId: String, offset: Int, limit: Int): List<Post>
+    fun findPostsByFriends(userId: String, limit: Int): List<Post>
+
+    fun findFriendIds(userId: String): List<String>
 }

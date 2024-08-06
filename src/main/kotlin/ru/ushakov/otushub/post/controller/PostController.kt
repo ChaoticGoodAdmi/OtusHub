@@ -88,4 +88,4 @@ data class PostResponse(
     var content: String? = null,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null
-)
+) : java.io.Serializable

@@ -46,23 +46,33 @@ class JdbcPostRepository(
         return jdbcTemplate.queryForObject(sql, postRowMapper, postId)
     }
 
-    override fun findPostsByFriends(userId: String, offset: Int, limit: Int): List<Post> {
+    override fun findPostsByFriends(userId: String, limit: Int): List<Post> {
         val sql = """
             SELECT p.id, p.user_id, p.content, p.created_at, p.updated_at 
             FROM userdb.posts p
             INNER JOIN userdb.friends f ON p.user_id = f.friend_id
             WHERE f.user_id = ?
             ORDER BY p.created_at DESC
-            LIMIT ? OFFSET ?
+            LIMIT ?
         """
         return jdbcTemplate.query(
             sql,
             PreparedStatementSetter { ps ->
                 ps.setString(1, userId)
                 ps.setInt(2, limit)
-                ps.setInt(3, offset)
             },
             postRowMapper
         )
+    }
+
+    override fun findFriendIds(userId: String): List<String> {
+        val sql = """
+            SELECT user_id 
+            FROM userdb.friends 
+            WHERE friend_id = ?
+        """
+        return jdbcTemplate.query(sql, { ps -> ps.setString(1, userId) }) { rs, _ ->
+            rs.getString("user_id")
+        }
     }
 }
